@@ -10,7 +10,7 @@ public record CreateProductionJobRequest(
     String jobNumber,
 
     @NotBlank(message = "Product name is required")
-    @Size(max = 200, message = "Product name must be at most 100 characters")
+    @Size(max = 200, message = "Product name must be at most 200 characters")
     String productName,
 
     @Positive(message = "Ordered quantity must be a positive number")

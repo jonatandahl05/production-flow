@@ -7,9 +7,10 @@ import org.springframework.transaction.annotation.Transactional;
 
 import lombok.RequiredArgsConstructor;
 import se.jonatandahl.productionflow.dto.request.CreateProductionJobRequest;
-import se.jonatandahl.productionflow.dto.request.response.ProductionJobResponse;
+import se.jonatandahl.productionflow.dto.response.ProductionJobResponse;
 import se.jonatandahl.productionflow.entity.ProductionJob;
 import se.jonatandahl.productionflow.exception.DuplicateJobNumberException;
+import se.jonatandahl.productionflow.exception.ResourceNotFoundException;
 import se.jonatandahl.productionflow.repository.ProductionJobRepository;
 
 @Service
@@ -18,24 +19,33 @@ import se.jonatandahl.productionflow.repository.ProductionJobRepository;
 public class ProductionJobService {
 
     private final ProductionJobRepository productionJobRepository;
-
+    
+    @Transactional
     public ProductionJobResponse create(CreateProductionJobRequest request) {
-
-        String jobNumber = request.jobNumber().trim();
-
-        if (productionJobRepository.existsByJobNumber(jobNumber)) {
-            throw new DuplicateJobNumberException("A production job with job number '" + jobNumber + "' already exists.");
-        }
-
         ProductionJob job = new ProductionJob(
-            jobNumber,
-            request.productName().trim(),
+            request.jobNumber(),
+            request.productName(),
             request.orderedQuantity()
         );
+
+        if (productionJobRepository.existsByJobNumber(job.getJobNumber())) {
+            throw new DuplicateJobNumberException(
+                "A production job with job number '" + job.getJobNumber() + "' already exists."
+            );
+        }
 
         ProductionJob savedJob = productionJobRepository.save(job);
 
         return ProductionJobResponse.from(savedJob);
+    }
+
+    public ProductionJobResponse findById(Long id) {
+        ProductionJob job = productionJobRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException(
+                    "Production job not found: " + id
+                ));
+
+        return ProductionJobResponse.from(job);
     }
 
     public List<ProductionJobResponse> findAll() {

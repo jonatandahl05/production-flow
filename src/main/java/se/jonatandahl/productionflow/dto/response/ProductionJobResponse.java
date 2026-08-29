@@ -1,4 +1,4 @@
-package se.jonatandahl.productionflow.dto.request.response;
+package se.jonatandahl.productionflow.dto.response;
 
 import java.time.Instant;
 
