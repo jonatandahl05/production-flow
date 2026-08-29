@@ -40,12 +40,7 @@ public class ProductionJobService {
     }
 
     public ProductionJobResponse findById(Long id) {
-        ProductionJob job = productionJobRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException(
-                    "Production job not found: " + id
-                ));
-
-        return ProductionJobResponse.from(job);
+        return ProductionJobResponse.from(findEntityById(id));
     }
 
     public List<ProductionJobResponse> findAll() {
@@ -54,5 +49,20 @@ public class ProductionJobService {
                 .map(ProductionJobResponse::from)
                 .toList();
     }
+
+    private ProductionJob findEntityById(Long id) {
+        return productionJobRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException(
+                    "Production job not found: " + id
+                ));
+    }
+
+    @Transactional
+    public ProductionJobResponse markAsProductionReady (Long id) {
+        ProductionJob job = findEntityById(id);
+        job.markAsProductionReady();
+        return ProductionJobResponse.from(job);
+    }
+
     
 }
