@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -41,6 +42,12 @@ public class ProductionJobController {
     public ProductionJobResponse findById(
             @PathVariable Long id) {
         return productionJobService.findById(id);
+    }
+
+    @PatchMapping("/{id}/production-ready")
+    public ProductionJobResponse markAsProductionReady(
+            @PathVariable Long id) {
+        return productionJobService.markAsProductionReady(id);
     }
     
 }
