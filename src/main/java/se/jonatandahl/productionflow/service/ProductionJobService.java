@@ -64,5 +64,14 @@ public class ProductionJobService {
         return ProductionJobResponse.from(job);
     }
 
+    @Transactional
+    public ProductionJobResponse startPrinting(Long id) {
+        ProductionJob job = findEntityById(id);
+        job.startPrinting();
+        return ProductionJobResponse.from(job);
+    }
+
+    
+
     
 }

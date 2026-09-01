@@ -49,5 +49,11 @@ public class ProductionJobController {
             @PathVariable Long id) {
         return productionJobService.markAsProductionReady(id);
     }
+
+    @PatchMapping("/{id}/start-printing")
+    public ProductionJobResponse startPrinting(
+            @PathVariable Long id) {
+        return productionJobService.startPrinting(id);
+    }
     
 }
