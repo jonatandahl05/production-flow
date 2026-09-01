@@ -7,6 +7,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import lombok.RequiredArgsConstructor;
 import se.jonatandahl.productionflow.dto.request.CreateProductionJobRequest;
+import se.jonatandahl.productionflow.dto.request.FinishPrintingRequest;
 import se.jonatandahl.productionflow.dto.response.ProductionJobResponse;
 import se.jonatandahl.productionflow.entity.ProductionJob;
 import se.jonatandahl.productionflow.exception.DuplicateJobNumberException;
@@ -68,6 +69,13 @@ public class ProductionJobService {
     public ProductionJobResponse startPrinting(Long id) {
         ProductionJob job = findEntityById(id);
         job.startPrinting();
+        return ProductionJobResponse.from(job);
+    }
+
+    @Transactional
+    public ProductionJobResponse finishPrinting(Long id, FinishPrintingRequest request) {
+        ProductionJob job = findEntityById(id);
+        job.finishPrinting(request.producedQuantity(), request.wasteQuantity());
         return ProductionJobResponse.from(job);
     }
 

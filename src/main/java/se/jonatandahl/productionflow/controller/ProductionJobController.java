@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import se.jonatandahl.productionflow.dto.request.CreateProductionJobRequest;
+import se.jonatandahl.productionflow.dto.request.FinishPrintingRequest;
 import se.jonatandahl.productionflow.dto.response.ProductionJobResponse;
 import se.jonatandahl.productionflow.service.ProductionJobService;
 
@@ -54,6 +55,13 @@ public class ProductionJobController {
     public ProductionJobResponse startPrinting(
             @PathVariable Long id) {
         return productionJobService.startPrinting(id);
+    }
+
+    @PatchMapping("/{id}/finish-printing")
+    public ProductionJobResponse finishPrinting(
+            @PathVariable Long id,
+            @Valid @RequestBody FinishPrintingRequest request) {
+        return productionJobService.finishPrinting(id, request);
     }
     
 }
