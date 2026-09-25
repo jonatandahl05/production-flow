@@ -63,5 +63,17 @@ public class ProductionJobController {
             @Valid @RequestBody FinishPrintingRequest request) {
         return productionJobService.finishPrinting(id, request);
     }
+
+    @PatchMapping("/{id}/start-rewinding")
+    public ProductionJobResponse startRewinding(
+            @PathVariable Long id) {
+        return productionJobService.startRewinding(id);
+    }
+
+    @PatchMapping("/{id}/complete")
+    public ProductionJobResponse complete(
+            @PathVariable Long id) {
+        return productionJobService.complete(id);
+    }
     
 }

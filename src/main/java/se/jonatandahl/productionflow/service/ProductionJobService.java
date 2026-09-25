@@ -79,6 +79,21 @@ public class ProductionJobService {
         return ProductionJobResponse.from(job);
     }
 
+    @Transactional 
+    public ProductionJobResponse startRewinding(Long id) {
+        ProductionJob job = findEntityById(id);
+        job.startRewinding();
+        return ProductionJobResponse.from(job);
+    }
+
+    @Transactional
+    public ProductionJobResponse complete(Long id) {
+        ProductionJob job = findEntityById(id);
+        job.complete();
+        return ProductionJobResponse.from(job);
+    }
+
+
     
 
     
